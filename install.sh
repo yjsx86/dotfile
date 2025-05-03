@@ -22,7 +22,7 @@ ARCH=$(uname -m)
 echo -e "${GREEN}检测到CPU架构: ${ARCH}${NC}"
 
 # 1. 检查并安装依赖
-echo -e "${GREEN}[1/7] 检查并安装依赖 (git, zsh, curl, wget)...${NC}"
+echo -e "${GREEN}[1/7] 检查并安装依赖 (git, zsh, curl, wget, xz-utils)...${NC}"
 
 DEPENDENCIES=(git zsh curl wget)
 MISSING_DEPS=()
