@@ -43,12 +43,12 @@ else
 fi
 
 # 特别处理 fd-find 的软连接
-echo -e "\n${GREEN}创建 fd-find 软连接...${NC}"
-if command -v fd-find &> /dev/null; then
+echo -e "\n${GREEN}创建 fdfind 软连接...${NC}"
+if command -v fdfind &> /dev/null; then
     sudo ln -sf $(command -v fdfind) /usr/local/bin/fd
-    echo -e "${GREEN}软连接创建成功: fd-find → fd${NC}"
+    echo -e "${GREEN}软连接创建成功: fdfind → fd${NC}"
 else
-    echo -e "${RED}错误: fd-find 未找到，无法创建软连接${NC}"
+    echo -e "${RED}错误: fdfind 未找到，无法创建软连接${NC}"
 fi
 
 # 2. 安装Helix编辑器
