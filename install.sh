@@ -45,7 +45,7 @@ fi
 # 特别处理 fd-find 的软连接
 echo -e "\n${GREEN}创建 fd-find 软连接...${NC}"
 if command -v fd-find &> /dev/null; then
-    sudo ln -sf $(command -v fd-find) /usr/local/bin/fd
+    sudo ln -sf $(command -v fdfind) /usr/local/bin/fd
     echo -e "${GREEN}软连接创建成功: fd-find → fd${NC}"
 else
     echo -e "${RED}错误: fd-find 未找到，无法创建软连接${NC}"
