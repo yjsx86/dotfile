@@ -22,9 +22,9 @@ ARCH=$(uname -m)
 echo -e "${GREEN}检测到CPU架构: ${ARCH}${NC}"
 
 # 1. 检查并安装依赖
-echo -e "${GREEN}[1/7] 检查并安装依赖 (git, zsh, curl, wget, xz-utils)...${NC}"
+echo -e "${GREEN}[1/7] 检查并安装依赖 (git, zsh, curl, wget, xz-utils, fd-find, btop)...${NC}"
 
-DEPENDENCIES=(git zsh curl wget)
+DEPENDENCIES=(git zsh curl wget xz-utils fd-find btop)
 MISSING_DEPS=()
 
 for dep in "${DEPENDENCIES[@]}"; do
@@ -40,6 +40,15 @@ if [ ${#MISSING_DEPS[@]} -gt 0 ]; then
     sudo apt install -y "${MISSING_DEPS[@]}"
 else
     echo -e "${GREEN}所有依赖已安装${NC}"
+fi
+
+# 特别处理 fd-find 的软连接
+echo -e "\n${GREEN}创建 fd-find 软连接...${NC}"
+if command -v fd-find &> /dev/null; then
+    sudo ln -sf $(command -v fd-find) /usr/local/bin/fd
+    echo -e "${GREEN}软连接创建成功: fd-find → fd${NC}"
+else
+    echo -e "${RED}错误: fd-find 未找到，无法创建软连接${NC}"
 fi
 
 # 2. 安装Helix编辑器
