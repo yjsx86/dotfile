@@ -177,6 +177,7 @@ fi
 
 echo -e "\n${GREEN}所有步骤已完成！${NC}"
 echo -e "${YELLOW}您可以运行以下命令测试安装：${NC}"
+echo "  - 即刻切换zsh: exec zsh"
 echo "  - Helix编辑器: hx"
 echo "  - Docker: docker --version"
 echo "  - Docker运行测试: docker run hello-world"
