@@ -22,9 +22,9 @@ ARCH=$(uname -m)
 echo -e "${GREEN}检测到CPU架构: ${ARCH}${NC}"
 
 # 1. 检查并安装依赖
-echo -e "${GREEN}[1/7] 检查并安装依赖 (git, zsh, curl, wget, xz-utils, fd-find, btop)...${NC}"
+echo -e "${GREEN}[1/7] 检查并安装依赖 (git, zsh, wget, xz-utils, fd-find, btop, fzf)...${NC}"
 
-DEPENDENCIES=(git zsh curl wget xz-utils fd-find btop)
+DEPENDENCIES=(git zsh wget xz-utils fd-find btop fzf)
 MISSING_DEPS=()
 
 for dep in "${DEPENDENCIES[@]}"; do
@@ -148,6 +148,7 @@ export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="ys"
 
 plugins=(
+    fzf
     docker
     git
     sudo
