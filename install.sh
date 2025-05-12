@@ -22,9 +22,9 @@ ARCH=$(uname -m)
 echo -e "${GREEN}检测到CPU架构: ${ARCH}${NC}"
 
 # 1. 检查并安装依赖
-echo -e "${GREEN}[1/7] 检查并安装依赖 (git, zsh, wget, xz-utils, fd-find, btop, fzf)...${NC}"
+echo -e "${GREEN}[1/7] 检查并安装依赖 (git, zsh, wget, xz-utils, fd-find, btop, fzf, tmux)...${NC}"
 
-DEPENDENCIES=(git zsh wget xz-utils fd-find btop fzf)
+DEPENDENCIES=(git zsh wget xz-utils fd-find btop fzf tmux)
 MISSING_DEPS=()
 
 for dep in "${DEPENDENCIES[@]}"; do
