@@ -23,7 +23,7 @@ echo -e "${GREEN}检测到CPU架构: ${ARCH}${NC}"
 
 # 1. 检查并安装依赖
 sudo apt update
-echo -e "${GREEN}[1/7] 检查并安装依赖 (git, zsh, build-essential, wget, xz-utils, fd-find, btop, fzf, tmux, fail2ban)...${NC}"
+echo -e "${GREEN}[1/5] 检查并安装依赖 (git, zsh, build-essential, wget, xz-utils, fd-find, btop, fzf, tmux, fail2ban)...${NC}"
 DEPENDENCIES=(git zsh build-essential wget xz-utils fd-find btop fzf tmux fail2ban)
 MISSING_DEPS=()
 
@@ -42,16 +42,13 @@ else
 fi
 
 # 特别处理 fd-find 的软连接
-echo -e "\n${GREEN}创建 fdfind 软连接...${NC}"
-if command -v fdfind &> /dev/null; then
+if command -v fd &> /dev/null; then
     sudo ln -sf $(command -v fdfind) /usr/local/bin/fd
     echo -e "${GREEN}软连接创建成功: fdfind → fd${NC}"
-else
-    echo -e "${RED}错误: fdfind 未找到，无法创建软连接${NC}"
 fi
 
 # 2. 安装Helix编辑器
-echo -e "\n${GREEN}[2/7] 安装Helix编辑器...${NC}"
+echo -e "\n${GREEN}[2/5] 安装Helix编辑器...${NC}"
 if ! command -v hx &> /dev/null; then
     echo -e "${GREEN}正在安装Helix...${NC}"
     
@@ -80,7 +77,7 @@ else
 fi
 
 # 3. 安装Docker
-echo -e "\n${GREEN}[3/7] 安装Docker...${NC}"
+echo -e "\n${GREEN}[3/5] 安装Docker...${NC}"
 if ! command -v docker &> /dev/null; then
     echo -e "${GREEN}正在安装Docker...${NC}"
     # 安装Docker官方依赖
@@ -103,12 +100,12 @@ else
 fi
 
 # 4. 安装Oh My Zsh
-echo -e "\n${GREEN}[4/7] 安装Oh My Zsh...${NC}"
+echo -e "\n${GREEN}[4/5] 安装Oh My Zsh...${NC}"
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
     yes | RUNZSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
     # 安装zsh-autosuggestions插件
-    echo -e "\n${GREEN}[5/7] 安装zsh-autosuggestions插件...${NC}"
+    echo -e "\n${GREEN}安装zsh-autosuggestions插件...${NC}"
     AUTOSUGGESTIONS_DIR="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
     if [ ! -d "$AUTOSUGGESTIONS_DIR" ]; then
         git clone https://github.com/zsh-users/zsh-autosuggestions.git "$AUTOSUGGESTIONS_DIR"
@@ -117,7 +114,7 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
     fi
 
     # 安装zsh-syntax-highlighting插件
-    echo -e "\n${GREEN}[6/7] 安装zsh-syntax-highlighting插件...${NC}"
+    echo -e "\n${GREEN}安装zsh-syntax-highlighting插件...${NC}"
     SYNTAX_HIGHLIGHTING_DIR="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
     if [ ! -d "$SYNTAX_HIGHLIGHTING_DIR" ]; then
         git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$SYNTAX_HIGHLIGHTING_DIR"
@@ -126,7 +123,7 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
     fi
 
     # 配置.zshrc文件
-    echo -e "\n${GREEN}[7/7] 配置.zshrc文件...${NC}"
+    echo -e "\n${GREEN}配置.zshrc文件...${NC}"
     ZSH_RC_FILE="$HOME/.zshrc"
 
     # 写入新配置
@@ -169,7 +166,7 @@ fi
 
 
 # 5. 安装和配置fail2ban
-echo -e "\n${GREEN}[8/8] 安装和配置fail2ban...${NC}"
+echo -e "\n${GREEN}[5/5] 安装和配置fail2ban...${NC}"
 if ! command -v fail2ban-server &> /dev/null; then
     echo -e "${GREEN}正在安装fail2ban...${NC}"
     sudo apt install -y fail2ban
