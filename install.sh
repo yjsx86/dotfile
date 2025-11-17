@@ -24,7 +24,7 @@ echo -e "${GREEN}检测到CPU架构: ${ARCH}${NC}"
 # 1. 检查并安装依赖
 sudo apt update
 echo -e "${GREEN}[1/7] 检查并安装依赖 (git, zsh, build-essential, wget, xz-utils, fd-find, btop, fzf, tmux, fail2ban)...${NC}"
-DEPENDENCIES=(git zsh build-essential wget xz-utils fd-find btop fzf tmux, fail2ban)
+DEPENDENCIES=(git zsh build-essential wget xz-utils fd-find btop fzf tmux fail2ban)
 MISSING_DEPS=()
 
 for dep in "${DEPENDENCIES[@]}"; do
