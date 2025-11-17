@@ -23,12 +23,22 @@ echo -e "${GREEN}检测到CPU架构: ${ARCH}${NC}"
 
 # 1. 检查并安装依赖
 sudo apt update
-echo -e "${GREEN}[1/5] 检查并安装依赖 (git, zsh, build-essential, wget, xz-utils, fd-find, btop, fzf, tmux, fail2ban)...${NC}"
-DEPENDENCIES=(git zsh build-essential wget xz-utils fd-find btop fzf tmux fail2ban)
+echo -e "${GREEN}[1/5] 检查并安装依赖 (git, zsh, build-essential, wget, xz-utils, fd-find, btop, fzf, tmux)...${NC}"
+DEPENDENCIES=(git zsh build-essential wget xz-utils fd-find btop fzf tmux)
 MISSING_DEPS=()
 
+# 为每个包定义对应的检查命令或使用dpkg检查
+check_package_installed() {
+    # 使用dpkg -l检查包是否已安装
+    if dpkg -l | grep -q "^ii\s*$1\s"; then
+        return 0  # 包已安装
+    else
+        return 1  # 包未安装
+    fi
+}
+
 for dep in "${DEPENDENCIES[@]}"; do
-    if ! command -v "$dep" &> /dev/null; then
+    if ! check_package_installed "$dep"; then
         MISSING_DEPS+=("$dep")
     fi
 done
@@ -105,7 +115,7 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
     yes | RUNZSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
     # 安装zsh-autosuggestions插件
-    echo -e "\n${GREEN}安装zsh-autosuggestions插件...${NC}"
+    echo -e "\n${GREEN}[5/7] 安装zsh-autosuggestions插件...${NC}"
     AUTOSUGGESTIONS_DIR="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
     if [ ! -d "$AUTOSUGGESTIONS_DIR" ]; then
         git clone https://github.com/zsh-users/zsh-autosuggestions.git "$AUTOSUGGESTIONS_DIR"
@@ -114,7 +124,7 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
     fi
 
     # 安装zsh-syntax-highlighting插件
-    echo -e "\n${GREEN}安装zsh-syntax-highlighting插件...${NC}"
+    echo -e "\n${GREEN}[6/7] 安装zsh-syntax-highlighting插件...${NC}"
     SYNTAX_HIGHLIGHTING_DIR="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
     if [ ! -d "$SYNTAX_HIGHLIGHTING_DIR" ]; then
         git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$SYNTAX_HIGHLIGHTING_DIR"
@@ -123,7 +133,7 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
     fi
 
     # 配置.zshrc文件
-    echo -e "\n${GREEN}配置.zshrc文件...${NC}"
+    echo -e "\n${GREEN}[7/7] 配置.zshrc文件...${NC}"
     ZSH_RC_FILE="$HOME/.zshrc"
 
     # 写入新配置
