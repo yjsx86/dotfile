@@ -22,9 +22,9 @@ ARCH=$(uname -m)
 echo -e "${GREEN}检测到CPU架构: ${ARCH}${NC}"
 
 # 1. 检查并安装依赖
-echo -e "${GREEN}[1/7] 检查并安装依赖 (git, zsh, build-essential, wget, xz-utils, fd-find, btop, fzf, tmux)...${NC}"
-
-DEPENDENCIES=(git zsh build-essential wget xz-utils fd-find btop fzf tmux)
+sudo apt update
+echo -e "${GREEN}[1/7] 检查并安装依赖 (git, zsh, build-essential, wget, xz-utils, fd-find, btop, fzf, tmux, fail2ban)...${NC}"
+DEPENDENCIES=(git zsh build-essential wget xz-utils fd-find btop fzf tmux, fail2ban)
 MISSING_DEPS=()
 
 for dep in "${DEPENDENCIES[@]}"; do
@@ -36,7 +36,6 @@ done
 if [ ${#MISSING_DEPS[@]} -gt 0 ]; then
     echo -e "${YELLOW}以下依赖未安装: ${MISSING_DEPS[*]}${NC}"
     echo -e "${GREEN}正在安装依赖...${NC}"
-    sudo apt update
     sudo apt install -y "${MISSING_DEPS[@]}"
 else
     echo -e "${GREEN}所有依赖已安装${NC}"
@@ -85,7 +84,6 @@ echo -e "\n${GREEN}[3/7] 安装Docker...${NC}"
 if ! command -v docker &> /dev/null; then
     echo -e "${GREEN}正在安装Docker...${NC}"
     # 安装Docker官方依赖
-    sudo apt update
     sudo apt install -y ca-certificates
     # 添加Docker官方GPG密钥
     sudo install -m 0755 -d /etc/apt/keyrings
@@ -96,7 +94,6 @@ if ! command -v docker &> /dev/null; then
 	    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
 	    $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
 	    sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-    sudo apt update
     # 安装Docker
     sudo apt update
     sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
@@ -109,40 +106,31 @@ fi
 echo -e "\n${GREEN}[4/7] 安装Oh My Zsh...${NC}"
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
     yes | RUNZSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-else
-    echo -e "${YELLOW}Oh My Zsh已安装，跳过安装步骤${NC}"
-fi
 
-# 5. 安装zsh-autosuggestions插件
-echo -e "\n${GREEN}[5/7] 安装zsh-autosuggestions插件...${NC}"
-AUTOSUGGESTIONS_DIR="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
-if [ ! -d "$AUTOSUGGESTIONS_DIR" ]; then
-    git clone https://github.com/zsh-users/zsh-autosuggestions.git "$AUTOSUGGESTIONS_DIR"
-else
-    echo -e "${YELLOW}插件zsh-autosuggestions已安装，跳过安装步骤${NC}"
-fi
+    # 安装zsh-autosuggestions插件
+    echo -e "\n${GREEN}[5/7] 安装zsh-autosuggestions插件...${NC}"
+    AUTOSUGGESTIONS_DIR="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
+    if [ ! -d "$AUTOSUGGESTIONS_DIR" ]; then
+        git clone https://github.com/zsh-users/zsh-autosuggestions.git "$AUTOSUGGESTIONS_DIR"
+    else
+        echo -e "${YELLOW}插件zsh-autosuggestions已安装，跳过安装步骤${NC}"
+    fi
 
-# 6. 安装zsh-syntax-highlighting插件
-echo -e "\n${GREEN}[6/7] 安装zsh-syntax-highlighting插件...${NC}"
-SYNTAX_HIGHLIGHTING_DIR="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
-if [ ! -d "$SYNTAX_HIGHLIGHTING_DIR" ]; then
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$SYNTAX_HIGHLIGHTING_DIR"
-else
-    echo -e "${YELLOW}插件zsh-syntax-highlighting已安装，跳过安装步骤${NC}"
-fi
+    # 安装zsh-syntax-highlighting插件
+    echo -e "\n${GREEN}[6/7] 安装zsh-syntax-highlighting插件...${NC}"
+    SYNTAX_HIGHLIGHTING_DIR="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
+    if [ ! -d "$SYNTAX_HIGHLIGHTING_DIR" ]; then
+        git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$SYNTAX_HIGHLIGHTING_DIR"
+    else
+        echo -e "${YELLOW}插件zsh-syntax-highlighting已安装，跳过安装步骤${NC}"
+    fi
 
-# 7. 配置.zshrc文件
-echo -e "\n${GREEN}[7/7] 配置.zshrc文件...${NC}"
-ZSH_RC_FILE="$HOME/.zshrc"
+    # 配置.zshrc文件
+    echo -e "\n${GREEN}[7/7] 配置.zshrc文件...${NC}"
+    ZSH_RC_FILE="$HOME/.zshrc"
 
-# 备份原有文件
-if [ -f "$ZSH_RC_FILE" ]; then
-    cp "$ZSH_RC_FILE" "$ZSH_RC_FILE.bak"
-    echo -e "${GREEN}已备份原有.zshrc文件为.zshrc.bak${NC}"
-fi
-
-# 写入新配置
-cat > "$ZSH_RC_FILE" << 'EOL'
+    # 写入新配置
+    cat > "$ZSH_RC_FILE" << 'EOL'
 # Oh My Zsh配置
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="ys"
@@ -161,19 +149,66 @@ source $ZSH/oh-my-zsh.sh
 # 用户自定义配置可以添加在下面
 EOL
 
-echo -e "${GREEN}配置已完成！${NC}"
+    echo -e "${GREEN}配置已完成！${NC}"
 
-# 设置zsh为默认shell
-if [ "$SHELL" != "$(which zsh)" ]; then
-    echo -e "\n${GREEN}设置zsh为默认shell...${NC}"
-    if chsh -s "$(which zsh)"; then
-        echo -e "${GREEN}完成！请重新登录或重启终端以使用zsh。${NC}"
+    # 设置zsh为默认shell
+    if [ "$SHELL" != "$(which zsh)" ]; then
+        echo -e "\n${GREEN}设置zsh为默认shell...${NC}"
+        if chsh -s "$(which zsh)"; then
+            echo -e "${GREEN}完成！请重新登录或重启终端以使用zsh。${NC}"
+        else
+            echo -e "${RED}警告：无法更改默认shell，您可以手动运行: chsh -s $(which zsh)${NC}"
+        fi
     else
-        echo -e "${RED}警告：无法更改默认shell，您可以手动运行: chsh -s $(which zsh)${NC}"
+        echo -e "\n${GREEN}zsh已经是您的默认shell${NC}"
     fi
+
 else
-    echo -e "\n${GREEN}zsh已经是您的默认shell${NC}"
+    echo -e "${YELLOW}Oh My Zsh已安装，跳过安装步骤${NC}"
 fi
+
+
+# 5. 安装和配置fail2ban
+echo -e "\n${GREEN}[8/8] 安装和配置fail2ban...${NC}"
+if ! command -v fail2ban-server &> /dev/null; then
+    echo -e "${GREEN}正在安装fail2ban...${NC}"
+    sudo apt install -y fail2ban
+    echo -e "${GREEN}fail2ban安装完成！${NC}"
+
+    # 创建jail.local配置文件
+    echo -e "${GREEN}正在配置fail2ban...${NC}"
+    JAIL_LOCAL_FILE="/etc/fail2ban/jail.local"
+
+    # 写入新配置
+    sudo tee "$JAIL_LOCAL_FILE" > /dev/null << 'EOL'
+[DEFAULT]
+bantime  = 1d
+findtime  = 10m
+maxretry = 3
+backend = systemd
+[sshd]
+enabled = true
+port    = ssh
+logpath = %(sshd_log)s
+backend = %(sshd_backend)s
+EOL
+
+    # 设置fail2ban开机启动并立即启动
+    echo -e "${GREEN}设置fail2ban开机启动并启动服务...${NC}"
+    sudo systemctl enable fail2ban
+    sudo systemctl start fail2ban
+
+    # 检查服务状态
+    if sudo systemctl is-active --quiet fail2ban; then
+        echo -e "${GREEN}fail2ban服务启动成功！${NC}"
+    else
+        echo -e "${RED}警告：fail2ban服务启动失败，请检查配置。${NC}"
+    fi
+
+else
+    echo -e "${YELLOW}fail2ban已安装，跳过安装步骤${NC}"
+fi
+
 
 echo -e "\n${GREEN}所有步骤已完成！${NC}"
 echo -e "${YELLOW}您可以运行以下命令测试安装：${NC}"
@@ -181,3 +216,5 @@ echo "  - 即刻切换zsh: exec zsh"
 echo "  - Helix编辑器: hx"
 echo "  - Docker: docker --version"
 echo "  - Docker运行测试: docker run hello-world"
+echo "  - fail2ban状态检查: sudo systemctl status fail2ban"
+echo "  - fail2ban封禁列表: sudo fail2ban-client status sshd"
