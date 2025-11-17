@@ -52,7 +52,7 @@ else
 fi
 
 # 特别处理 fd-find 的软连接
-if command -v fd &> /dev/null; then
+if ! command -v fd &> /dev/null; then
     sudo ln -sf $(command -v fdfind) /usr/local/bin/fd
     echo -e "${GREEN}软连接创建成功: fdfind → fd${NC}"
 fi
