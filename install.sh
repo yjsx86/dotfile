@@ -78,10 +78,6 @@ if ! command -v hx &> /dev/null; then
     # 创建运行时目录
     mkdir -p ~/.config/helix
     sudo mv helix-*/runtime ~/.config/helix/
-
-    # 创建Helix配置文件
-    echo -e "theme = \"catppuccin_mocha\"\n[editor]\ntrue-color = true" > ~/.config/helix/config.toml
-    echo -e "${GREEN}Helix配置文件已创建${NC}"
     
     # 清理临时文件
     rm -rf helix-* helix.tar.xz
