@@ -80,7 +80,7 @@ if ! command -v hx &> /dev/null; then
     sudo mv helix-*/runtime ~/.config/helix/
 
     # 创建Helix配置文件
-    echo -e "theme = \"catppuccin_macchiato\"\n[editor]\ntrue-color = true" > ~/.config/helix/config.toml
+    echo -e "theme = \"catppuccin_mocha\"\n[editor]\ntrue-color = true" > ~/.config/helix/config.toml
     echo -e "${GREEN}Helix配置文件已创建${NC}"
     
     # 清理临时文件
