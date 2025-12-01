@@ -23,8 +23,8 @@ echo -e "${GREEN}检测到CPU架构: ${ARCH}${NC}"
 
 # 1. 检查并安装依赖
 sudo apt update
-echo -e "${GREEN}[1/5] 检查并安装依赖 (git, zsh, build-essential, wget, xz-utils, fd-find, btop, fzf, tmux)...${NC}"
-DEPENDENCIES=(git zsh build-essential wget xz-utils fd-find btop fzf tmux)
+echo -e "${GREEN}[1/5] 检查并安装依赖 (git, zsh, build-essential, wget, xz-utils, fd-find, btop, fzf, tmux, tree)...${NC}"
+DEPENDENCIES=(git zsh build-essential wget xz-utils fd-find btop fzf tmux tree)
 MISSING_DEPS=()
 
 # 为每个包定义对应的检查命令或使用dpkg检查
