@@ -17,13 +17,9 @@ if [ "$(id -u)" -eq 0 ]; then
     fi
 fi
 
-# 获取CPU架构
-ARCH=$(uname -m)
-echo -e "${GREEN}检测到CPU架构: ${ARCH}${NC}"
-
 # 1. 检查并安装依赖
 sudo apt update
-echo -e "${GREEN}[1/5] 检查并安装依赖 (git, zsh, build-essential, wget, xz-utils, fd-find, btop, fzf, tmux, tree)...${NC}"
+echo -e "${GREEN} 检查并安装依赖 (git, zsh, build-essential, wget, xz-utils, fd-find, btop, fzf, tmux, tree)...${NC}"
 DEPENDENCIES=(git zsh build-essential wget xz-utils fd-find btop fzf tmux tree)
 MISSING_DEPS=()
 
@@ -58,7 +54,7 @@ if ! command -v fd &> /dev/null; then
 fi
 
 # 2. 安装Helix编辑器
-echo -e "\n${GREEN}[2/5] 安装Helix编辑器...${NC}"
+echo -e "\n${GREEN} 安装Helix编辑器...${NC}"
 if ! command -v hx &> /dev/null; then
     echo -e "${GREEN}正在安装Helix...${NC}"
     
@@ -87,7 +83,7 @@ else
 fi
 
 # 3. 安装Docker
-echo -e "\n${GREEN}[3/5] 安装Docker...${NC}"
+echo -e "\n${GREEN} 安装Docker...${NC}"
 if ! command -v docker &> /dev/null; then
     echo -e "${GREEN}正在安装Docker...${NC}"
     # 安装Docker官方依赖
@@ -110,7 +106,7 @@ else
 fi
 
 # 4. 安装Oh My Zsh
-echo -e "\n${GREEN}[4/5] 安装Oh My Zsh...${NC}"
+echo -e "\n${GREEN} 安装Oh My Zsh...${NC}"
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
     yes | RUNZSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
@@ -176,7 +172,7 @@ fi
 
 
 # 5. 安装和配置fail2ban
-echo -e "\n${GREEN}[5/5] 安装和配置fail2ban...${NC}"
+echo -e "\n${GREEN} 安装和配置fail2ban...${NC}"
 if ! command -v fail2ban-server &> /dev/null; then
     echo -e "${GREEN}正在安装fail2ban...${NC}"
     sudo apt install -y fail2ban
