@@ -215,9 +215,7 @@ fi
 
 echo -e "\n${GREEN}所有步骤已完成！${NC}"
 echo -e "${YELLOW}您可以运行以下命令测试安装：${NC}"
-echo "  - 即刻切换zsh: exec zsh"
-echo "  - Helix编辑器: hx"
 echo "  - Docker: docker --version"
-echo "  - fail2ban封禁列表: fail2ban-client status sshd"
+echo "  - fail2ban封禁列表: fail2ban-client status"
 echo "  - tmux配置文件:curl -fsSL https://raw.githubusercontent.com/yjsx86/dotfile/main/.config/tmux/tmux.conf -o ~/.config/tmux/tmux.conf"
 echo "  - helix配置文件:curl -fsSL https://raw.githubusercontent.com/yjsx86/dotfile/main/.config/helix/config.toml -o ~/.config/helix/config.toml"
