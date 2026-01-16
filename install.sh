@@ -139,6 +139,7 @@ export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="ys"
 
 plugins=(
+    z
     fzf
     docker
     git
