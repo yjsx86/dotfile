@@ -55,37 +55,7 @@ install_dependencies() {
     echo -e "${GREEN}依赖安装完成！${NC}"
 }
 
-install_helix() {
-    echo -e "\n${GREEN}====== 安装Helix编辑器 ======${NC}"
-    if command -v hx &> /dev/null; then
-        echo -e "${YELLOW}Helix已安装，跳过安装步骤${NC}"
-        return 0
-    fi
 
-    ARCH=$(uname -m)
-    case $ARCH in
-        x86_64) ARCH="x86_64" ;;
-        aarch64) ARCH="aarch64" ;;
-        armv7l) ARCH="armv7l" ;;
-        *) echo -e "${RED}不支持的架构: $ARCH${NC}"; return 1 ;;
-    esac
-
-    echo -e "${YELLOW}从GitHub下载Helix（适配 ${ARCH}）...${NC}"
-    LATEST_RELEASE=$(curl -s https://api.github.com/repos/helix-editor/helix/releases/latest | grep "browser_download_url.*-${ARCH}-linux.tar.xz" | cut -d '"' -f 4)
-
-    if [ -z "$LATEST_RELEASE" ]; then
-        echo -e "${RED}错误：无法获取Helix下载链接，请检查网络或手动安装${NC}"
-        return 1
-    fi
-
-    wget -O helix.tar.xz "$LATEST_RELEASE"
-    tar -xvf helix.tar.xz
-    sudo mv helix-*/hx /usr/local/bin/
-    mkdir -p ~/.config/helix
-    sudo mv helix-*/runtime ~/.config/helix/
-    rm -rf helix-* helix.tar.xz
-    echo -e "${GREEN}Helix安装完成！${NC}"
-}
 
 install_docker() {
     echo -e "\n${GREEN}====== 安装Docker ======${NC}"
@@ -217,10 +187,9 @@ print_banner() {
 print_menu() {
     echo -e "${YELLOW}可用选项：${NC}"
     echo -e "  ${GREEN}[1]${NC} 安装基础依赖      - git, zsh, build-essential, wget 等"
-    echo -e "  ${GREEN}[2]${NC} 安装Helix编辑器   - 现代终端文本编辑器"
-    echo -e "  ${GREEN}[3]${NC} 安装Docker         - 容器化平台"
-    echo -e "  ${GREEN}[4]${NC} 安装Oh My Zsh     - zsh框架 + 插件"
-    echo -e "  ${GREEN}[5]${NC} 安装fail2ban      - SSH入侵防护"
+    echo -e "  ${GREEN}[2]${NC} 安装Docker         - 容器化平台"
+    echo -e "  ${GREEN}[3]${NC} 安装Oh My Zsh     - zsh框架 + 插件"
+    echo -e "  ${GREEN}[4]${NC} 安装fail2ban      - SSH入侵防护"
     echo
     echo -e "${YELLOW}快捷选项：${NC}"
     echo -e "  ${GREEN}[a]${NC} 全选    ${GREEN}[n]${NC} 反选    ${GREEN}[0]${NC} 开始安装"
@@ -239,14 +208,13 @@ toggle_selection() {
 
 show_selection() {
     echo -e "${CYAN}当前选择: ${NC}"
-    for i in 1 2 3 4 5; do
+    for i in 1 2 3 4; do
         if [[ " ${SELECTED[@]} " =~ " $i " ]]; then
             case $i in
                 1) echo -ne "  ${GREEN}✓${NC} 基础依赖  " ;;
-                2) echo -ne "  ${GREEN}✓${NC} Helix编辑器  " ;;
-                3) echo -ne "  ${GREEN}✓${NC} Docker  " ;;
-                4) echo -ne "  ${GREEN}✓${NC} Oh My Zsh  " ;;
-                5) echo -ne "  ${GREEN}✓${NC} fail2ban  " ;;
+                2) echo -ne "  ${GREEN}✓${NC} Docker  " ;;
+                3) echo -ne "  ${GREEN}✓${NC} Oh My Zsh  " ;;
+                4) echo -ne "  ${GREEN}✓${NC} fail2ban  " ;;
             esac
         fi
     done
@@ -271,12 +239,11 @@ main() {
             2) toggle_selection 2 ;;
             3) toggle_selection 3 ;;
             4) toggle_selection 4 ;;
-            5) toggle_selection 5 ;;
             a|A)
-                SELECTED=(1 2 3 4 5)
+                SELECTED=(1 2 3 4)
                 ;;
             n|N)
-                for i in 1 2 3 4 5; do
+                for i in 1 2 3 4; do
                     if [[ " ${SELECTED[@]} " =~ " $i " ]]; then
                         SELECTED=("${SELECTED[@]/$i}")
                     else
@@ -310,10 +277,9 @@ main() {
     for item in "${SELECTED[@]}"; do
         case $item in
             1) install_dependencies ;;
-            2) install_helix ;;
-            3) install_docker ;;
-            4) install_ohmyzsh ;;
-            5) install_fail2ban ;;
+            2) install_docker ;;
+            3) install_ohmyzsh ;;
+            4) install_fail2ban ;;
         esac
     done
 
