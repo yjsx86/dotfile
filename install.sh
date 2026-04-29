@@ -19,8 +19,7 @@ fi
 
 # 1. 检查并安装依赖
 sudo apt update
-echo -e "${GREEN} 检查并安装依赖 (git, zsh, build-essential, wget, xz-utils, fd-find, btop, fzf, tmux, tree)...${NC}"
-DEPENDENCIES=(git zsh build-essential wget xz-utils fd-find btop fzf tmux tree)
+DEPENDENCIES=(git zsh build-essential wget xz-utils fd-find btop fzf tmux tree nmap)
 MISSING_DEPS=()
 
 # 为每个包定义对应的检查命令或使用dpkg检查
@@ -53,36 +52,7 @@ if ! command -v fd &> /dev/null; then
     echo -e "${GREEN}软连接创建成功: fdfind → fd${NC}"
 fi
 
-# 2. 安装Helix编辑器
-echo -e "\n${GREEN} 安装Helix编辑器...${NC}"
-if ! command -v hx &> /dev/null; then
-    echo -e "${GREEN}正在安装Helix...${NC}"
-    
-    # 删除原有的apt安装逻辑，直接使用GitHub下载
-    echo -e "${YELLOW}从GitHub下载Helix（适配 ${ARCH}）...${NC}"
-    LATEST_RELEASE=$(curl -s https://api.github.com/repos/helix-editor/helix/releases/latest | grep "browser_download_url.*-${ARCH}-linux.tar.xz" | cut -d '"' -f 4)
-    
-    if [ -z "$LATEST_RELEASE" ]; then
-        echo -e "${RED}错误：无法获取Helix下载链接，请检查网络或手动安装${NC}"
-        exit 1
-    fi
-    
-    wget -O helix.tar.xz "$LATEST_RELEASE"
-    tar -xvf helix.tar.xz
-    sudo mv helix-*/hx /usr/local/bin/
-    
-    # 创建运行时目录
-    mkdir -p ~/.config/helix
-    sudo mv helix-*/runtime ~/.config/helix/
-    
-    # 清理临时文件
-    rm -rf helix-* helix.tar.xz
-    echo -e "${GREEN}Helix安装完成！${NC}"
-else
-    echo -e "${YELLOW}Helix已安装，跳过安装步骤${NC}"
-fi
-
-# 3. 安装Docker
+# 2. 安装Docker
 echo -e "\n${GREEN} 安装Docker...${NC}"
 if ! command -v docker &> /dev/null; then
     echo -e "${GREEN}正在安装Docker...${NC}"
@@ -105,7 +75,7 @@ else
     echo -e "${YELLOW}Docker已安装，跳过安装步骤${NC}"
 fi
 
-# 4. 安装Oh My Zsh
+# 3. 安装Oh My Zsh
 echo -e "\n${GREEN} 安装Oh My Zsh...${NC}"
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
     yes | RUNZSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -172,7 +142,7 @@ else
 fi
 
 
-# 5. 安装和配置fail2ban
+# 4. 安装和配置fail2ban
 echo -e "\n${GREEN} 安装和配置fail2ban...${NC}"
 if ! command -v fail2ban-server &> /dev/null; then
     echo -e "${GREEN}正在安装fail2ban...${NC}"
