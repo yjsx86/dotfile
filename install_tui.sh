@@ -29,7 +29,7 @@ check_package_installed() {
 
 install_dependencies() {
     echo -e "\n${GREEN}====== 安装依赖 ======${NC}"
-    DEPENDENCIES=(git zsh build-essential wget xz-utils fd-find btop fzf tmux tree)
+    DEPENDENCIES=(git zsh build-essential wget xz-utils fd-find btop fzf tmux tree nmap)
     MISSING_DEPS=()
 
     for dep in "${DEPENDENCIES[@]}"; do
