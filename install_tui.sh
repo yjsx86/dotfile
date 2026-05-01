@@ -120,6 +120,7 @@ plugins=(
     zsh-syntax-highlighting
 )
 
+alias myip='echo "IPv4: $(curl -s4 icanhazip.com || echo "None")" && echo "IPv6: $(curl -s6 icanhazip.com || echo "None")"'
 source $ZSH/oh-my-zsh.sh
 
 # 用户自定义配置可以添加在下面
