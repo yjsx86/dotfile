@@ -108,7 +108,7 @@ install_ohmyzsh() {
     cat > "$ZSH_RC_FILE" << 'EOL'
 # Oh My Zsh配置
 export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="clean"
+ZSH_THEME="ys"
 
 plugins=(
     z
