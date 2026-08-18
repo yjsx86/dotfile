@@ -29,7 +29,7 @@ check_package_installed() {
 
 install_dependencies() {
     echo -e "\n${GREEN}====== 安装依赖 ======${NC}"
-    DEPENDENCIES=(git zsh build-essential wget xz-utils fd-find btop fzf tmux tree nmap)
+    DEPENDENCIES=(git zsh build-essential wget xz-utils fd-find btop fzf tmux tree nmap iftop nethogs vnstat)
     MISSING_DEPS=()
 
     for dep in "${DEPENDENCIES[@]}"; do
@@ -108,7 +108,7 @@ install_ohmyzsh() {
     cat > "$ZSH_RC_FILE" << 'EOL'
 # Oh My Zsh配置
 export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="robbyrussell"
+ZSH_THEME="ys"
 
 plugins=(
     z
