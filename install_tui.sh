@@ -114,7 +114,6 @@ plugins=(
     z
     fzf
     docker
-    docker-compose
     git
     sudo
     zsh-autosuggestions
