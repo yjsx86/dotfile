@@ -1,3 +1,4 @@
-theme = "ayu_mirage"
+# base16_default, hex_toxic, hex_steel
+theme = "hex_toxic"
 [editor]
 true-color = true
