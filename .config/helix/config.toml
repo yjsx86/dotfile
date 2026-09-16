@@ -1,4 +1,4 @@
-# base16_default, hex_toxic, hex_steel
-theme = "hex_toxic"
+# base16_default, github_dark
+theme = "github_dark"
 [editor]
 true-color = true
