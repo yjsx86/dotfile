@@ -1,4 +1,17 @@
 # base16_default, github_dark
 theme = "github_dark"
+
 [editor]
-true-color = true
+line-number = "relative"   # 行号显示：relative 显示相对距离，absolute 显示绝对行号
+mouse = true               # 启用鼠标支持
+cursorline = true          # 高亮当前行
+auto-format = true         # 保存时自动格式化
+auto-save = false          # 失去焦点时自动保存（需终端支持 focus 事件）
+
+[editor.cursor-shape]
+insert = "bar"             # 插入模式光标形状（竖线）
+normal = "block"           # 普通模式光标形状（方块）
+select = "underline"       # 选择模式光标形状（下划线）
+
+[editor.file-picker]
+hidden = false             # 文件选择器中是否显示隐藏文件
