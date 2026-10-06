@@ -87,22 +87,6 @@ install_ohmyzsh() {
 
     yes | RUNZSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-    echo -e "\n${GREEN}安装zsh-autosuggestions插件...${NC}"
-    AUTOSUGGESTIONS_DIR="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
-    if [ ! -d "$AUTOSUGGESTIONS_DIR" ]; then
-        git clone https://github.com/zsh-users/zsh-autosuggestions.git "$AUTOSUGGESTIONS_DIR"
-    else
-        echo -e "${YELLOW}插件zsh-autosuggestions已安装，跳过安装步骤${NC}"
-    fi
-
-    echo -e "\n${GREEN}安装zsh-syntax-highlighting插件...${NC}"
-    SYNTAX_HIGHLIGHTING_DIR="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
-    if [ ! -d "$SYNTAX_HIGHLIGHTING_DIR" ]; then
-        git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$SYNTAX_HIGHLIGHTING_DIR"
-    else
-        echo -e "${YELLOW}插件zsh-syntax-highlighting已安装，跳过安装步骤${NC}"
-    fi
-
     echo -e "\n${GREEN}配置.zshrc文件...${NC}"
     ZSH_RC_FILE="$HOME/.zshrc"
     cat > "$ZSH_RC_FILE" << 'EOL'
